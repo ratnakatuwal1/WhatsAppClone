@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,30 +30,117 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ratna.katuwal.whatsapp.R
+import com.ratna.katuwal.whatsapp.presentation.bottomnavigation.BottomNavigation
 
 @Composable
 @Preview(showSystemUi = true)
 fun HomeScreen(
     modifier: Modifier = Modifier
         .fillMaxSize()
-        .statusBarsPadding()
-) {
-    Scaffold(floatingActionButton = {
-        FloatingActionButton(
-            onClick = {
+        .statusBarsPadding(),
 
-            },
-            containerColor = colorResource(R.color.light_green),
-            modifier = Modifier.size(65.dp),
-            contentColor = colorResource(R.color.white)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.chat_icon),
-                contentDescription = null,
-                modifier = Modifier.size(28.dp)
-            )
-        }
-    }) {
+    ) {
+    val chatData = listOf(
+        ChatListModel(
+            R.drawable.salman_khan,
+            name = "Salman Khan",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.ajay_devgn,
+            name = "Ajay Devgn",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.akshay_kumar,
+            name = "Akshay Kumar",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.bhuvan_bam,
+            name = "Bhuvan Bam",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.disha_patani,
+            name = "Disha Patani",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.hrithik_roshan,
+            name = "Hrithik Roshan",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.kartik_aaryan,
+            name = "Kartik Aaryan",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.mrbeast,
+            name = "Mr Beast",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.rajkummar_rao,
+            name = "Rajkummar Rao",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.rashmika,
+            name = "Rashmika Mandhanna",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.sharadha_kapoor,
+            name = "Sharadha Kapoor",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.sharukh_khan,
+            name = "Sharukh Khan",
+            time = "10:00 AM",
+            message = "Hello"
+        ),
+        ChatListModel(
+            R.drawable.tripti_dimri,
+            name = "Tripti Dimri",
+            time = "10:00 AM",
+            message = "Hello"
+        )
+    )
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+
+                },
+                containerColor = colorResource(R.color.light_green),
+                modifier = Modifier.size(65.dp),
+                contentColor = colorResource(R.color.white)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.chat_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        },
+        bottomBar = {
+            BottomNavigation()
+        }) {
         Column(modifier = Modifier.padding(it)) {
             Spacer(modifier = Modifier.height(16.dp))
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -96,6 +185,12 @@ fun HomeScreen(
             }
 
             HorizontalDivider()
+
+            LazyColumn() {
+                items(chatData) {
+                    ChatDesign(chatListModel = it)
+                }
+            }
         }
     }
 }
