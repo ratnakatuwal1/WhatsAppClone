@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +34,20 @@ fun UpdateScreen(modifier: Modifier = Modifier) {
         sampleStatusData(image = R.drawable.disha_patani, name = "Disha Patani", time = "10:00 AM"),
         sampleStatusData(image = R.drawable.sai_pallavi, name = "Sai Pallavi", time = "10:00 AM"),
         sampleStatusData(image = R.drawable.carryminati, name = "Carry Minati", time = "10:00 AM")
+    )
+
+    val sampleChannel = listOf(
+        Channels(
+            image = R.drawable.neat_roots,
+            name = "Neat Roots",
+            description = "Latest tech news"
+        ),
+        Channels(
+            image = R.drawable.img,
+            name = "Food Lover",
+            description = "Discovers new recipes"
+        ),
+        Channels(image = R.drawable.meta, name = "Meta", description = "Explore the worlds")
     )
     Scaffold(
         floatingActionButton = {
@@ -55,10 +70,12 @@ fun UpdateScreen(modifier: Modifier = Modifier) {
             TopBar()
         }
     ) {
-        Column(modifier = Modifier
-            .padding(it)
-            .fillMaxSize()
-            .verticalScroll(scrollState)) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
             Text(
                 "Status",
                 fontSize = 20.sp,
@@ -93,14 +110,21 @@ fun UpdateScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
+            Spacer(modifier = Modifier.height(20.dp))
+
             Text(
-                "Stay updated on the topic that matter to you. Find channels to follow.",
+                "Find Channels follow.",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.teal_700),
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
-        }
 
+            Spacer(modifier = Modifier.height(16.dp))
+            sampleChannel.forEach {
+                ChannelItem(channels = it)
+
+            }
+        }
     }
 }
