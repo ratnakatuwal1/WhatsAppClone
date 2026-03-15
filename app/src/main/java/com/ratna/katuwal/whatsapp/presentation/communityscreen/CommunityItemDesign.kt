@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import com.ratna.katuwal.whatsapp.R
 
 @Composable
-@Preview(showSystemUi = true)
 fun CommunityItemDesign(modifier: Modifier = Modifier, communities: Communities) {
     Row(
         modifier = Modifier
