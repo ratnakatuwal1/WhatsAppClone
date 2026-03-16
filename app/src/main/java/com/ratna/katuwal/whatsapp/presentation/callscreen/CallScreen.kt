@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +45,14 @@ import com.ratna.katuwal.whatsapp.presentation.bottomnavigation.BottomNavigation
 @Composable
 @Preview(showSystemUi = true)
 fun CallScreen(modifier: Modifier = Modifier) {
+val sampleCall = listOf(
+    Call(R.drawable.salman_khan, "Salman Khan", "Yesterday, 12 AM", false),
+    Call(R.drawable.ajay_devgn, "Ajay Devgn", "Yesterday, 12 AM", false),
+    Call(R.drawable.sai_pallavi, "Sai Pallavi", "Yesterday, 12 AM", true),
+    Call(R.drawable.disha_patani, "Disha Patani", "Yesterday, 12 AM", false),
+    Call(R.drawable.hrithik_roshan, "Hrithik Roshan", "Yesterday, 12 AM", true)
+)
+    
     var isSearching by remember {
         mutableStateOf(false)
     }
@@ -153,6 +164,20 @@ fun CallScreen(modifier: Modifier = Modifier) {
         }
     }, bottomBar = {
         BottomNavigation()
+    }, floatingActionButton = {
+        FloatingActionButton(
+            onClick = {
+
+            },
+            contentColor = colorResource(R.color.white),
+            containerColor = colorResource(R.color.light_green),
+            modifier = Modifier.size(65.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.add_call),
+                contentDescription = null
+            )
+        }
     })
     
     {
@@ -186,6 +211,12 @@ fun CallScreen(modifier: Modifier = Modifier) {
                 color = colorResource(R.color.black),
                 modifier = Modifier.padding(16.dp, 8.dp)
             )
+
+            LazyColumn() {
+                items(sampleCall) { data ->
+                    CallItemDesign(call = data)
+                }
+            }
         }
     }
 }
