@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -26,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,7 +61,12 @@ fun CallScreen(modifier: Modifier = Modifier) {
                 .statusBarsPadding()
         ) {
             Column() {
-                Row(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     if (isSearching) {
                         TextField(
                             value = search,
@@ -82,7 +91,7 @@ fun CallScreen(modifier: Modifier = Modifier) {
                         )
                     } else {
                         Text(
-                            text = "Communities",
+                            text = "Call",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold,
                             color = colorResource(R.color.black),
@@ -144,7 +153,39 @@ fun CallScreen(modifier: Modifier = Modifier) {
         }
     }, bottomBar = {
         BottomNavigation()
-    }) {
-        
+    })
+    
+    {
+        Column(modifier = Modifier.padding(it)) {
+            Spacer(modifier = Modifier.height(14.dp))
+            FavouriteSection()
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+
+                }, colors = ButtonDefaults.buttonColors(colorResource(R.color.light_green)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    "Start a new call",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = colorResource(R.color.white)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                "Recent Call",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(R.color.black),
+                modifier = Modifier.padding(16.dp, 8.dp)
+            )
+        }
     }
 }
