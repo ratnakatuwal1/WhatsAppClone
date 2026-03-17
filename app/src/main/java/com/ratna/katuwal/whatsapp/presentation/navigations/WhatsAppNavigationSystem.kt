@@ -25,7 +25,7 @@ fun WhatsAppNavigationSystem(modifier: Modifier = Modifier) {
         }
 
         composable<Routes.WelcomeScreen> {
-            WelcomeScreen()
+            WelcomeScreen(navController)
         }
 
         composable<Routes.UserRegistrationScreen> {

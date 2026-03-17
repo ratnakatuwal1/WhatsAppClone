@@ -29,16 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.ratna.katuwal.whatsapp.R
+import com.ratna.katuwal.whatsapp.presentation.navigations.Routes
 
 @Composable
-@Preview(showSystemUi = true)
-fun WelcomeScreen() {
+fun WelcomeScreen(navHostController: NavHostController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxSize().statusBarsPadding()
+            .fillMaxSize()
+            .statusBarsPadding()
             .background(colorResource(R.color.white))
     ) {
         Image(
@@ -83,7 +85,8 @@ fun WelcomeScreen() {
 
         Spacer(modifier = Modifier.height(80.dp))
         Button(
-            onClick = {}, modifier = Modifier.size(height = 50.dp, width = 300.dp),
+            onClick = { navHostController.navigate(Routes.UserRegistrationScreen) },
+            modifier = Modifier.size(height = 50.dp, width = 300.dp),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_green))
         ) {
