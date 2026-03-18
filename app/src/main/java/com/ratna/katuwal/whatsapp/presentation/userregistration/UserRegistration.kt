@@ -1,5 +1,7 @@
 package com.ratna.katuwal.whatsapp.presentation.userregistration
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -29,6 +32,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +40,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -45,11 +51,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ratna.katuwal.whatsapp.R
+import com.ratna.katuwal.whatsapp.presentation.viewmodel.AuthState
+import com.ratna.katuwal.whatsapp.presentation.viewmodel.PhoneAuthViewModel
 
 @Composable
-@Preview(showSystemUi = true)
-fun UserRegistration(modifier: Modifier = Modifier) {
+
+fun UserRegistration(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    phoneAuthViewModel: PhoneAuthViewModel = hiltViewModel()
+) {
+    val authState by phoneAuthViewModel.authState.collectAsState()
+    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
+
+
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -64,6 +83,14 @@ fun UserRegistration(modifier: Modifier = Modifier) {
 
     var phoneNumber by remember {
         mutableStateOf("")
+    }
+
+    var otp by remember {
+        mutableStateOf("")
+    }
+
+    var verificationId by remember {
+        mutableStateOf<String?>(null)
     }
 
     Column(
@@ -155,67 +182,140 @@ fun UserRegistration(modifier: Modifier = Modifier) {
             }
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row() {
-                TextField(
-                    countryCode, onValueChange = {
-                        countryCode = it
-                    }, modifier = Modifier.width(80.dp),
-                    singleLine = true,
-                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedIndicatorColor = colorResource(R.color.light_green),
-                        focusedIndicatorColor = colorResource(R.color.light_green)
-                    )
-                )
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Row() {
+//                TextField(
+//                    countryCode, onValueChange = {
+//                        countryCode = it
+//                    }, modifier = Modifier.width(80.dp),
+//                    singleLine = true,
+//                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+//                    colors = TextFieldDefaults.colors(
+//                        unfocusedContainerColor = Color.Transparent,
+//                        focusedContainerColor = Color.Transparent,
+//                        unfocusedIndicatorColor = colorResource(R.color.light_green),
+//                        focusedIndicatorColor = colorResource(R.color.light_green)
+//                    )
+//                )
+//
+//                Spacer(modifier = Modifier.width(6.dp))
+//
+//                TextField(
+//                    phoneNumber,
+//                    onValueChange = {
+//                        phoneNumber = it
+//                    },
+//                    placeholder = { Text(text = "Phone Number") },
+//                    singleLine = true,
+//                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+//                    colors = TextFieldDefaults.colors(
+//                        unfocusedContainerColor = Color.Transparent,
+//                        focusedContainerColor = Color.Transparent,
+//                        unfocusedIndicatorColor = colorResource(R.color.light_green),
+//                        focusedIndicatorColor = colorResource(R.color.light_green)
+//                    )
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.height(30.dp))
+//
+//            Text(
+//                "Carrier charges may apply",
+//                color = Color.Gray.copy(alpha = 0.6f),
+//                fontSize = 16.sp
+//            )
+//
+//            Spacer(modifier = Modifier.height(30.dp))
+//
+//            Button(
+//                onClick = {}, modifier = Modifier.size(height = 50.dp, width = 150.dp),
+//                shape = RoundedCornerShape(8.dp),
+//                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_green))
+//            ) {
+//                Text(
+//                    "Next",
+//                    color = colorResource(R.color.white),
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 18.sp
+//                )
+//            }
+//        }
 
-                Spacer(modifier = Modifier.width(6.dp))
+        when (authState) {
+            is AuthState.Ideal, is AuthState.Loading, is AuthState.CodeSent -> {
+                if (authState is AuthState.CodeSent) {
+                    verificationId = (authState as AuthState.CodeSent).verificationId
+                }
+                if (verificationId == null) {
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
-                    phoneNumber,
-                    onValueChange = {
-                        phoneNumber = it
-                    },
-                    placeholder = { Text(text = "Phone Number") },
-                    singleLine = true,
-                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedIndicatorColor = colorResource(R.color.light_green),
-                        focusedIndicatorColor = colorResource(R.color.light_green)
-                    )
-                )
-            }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        TextField(
+                            countryCode, onValueChange = {
+                                countryCode = it
+                            }, modifier = Modifier.width(80.dp),
+                            singleLine = true,
+                            textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                // unfocusedIndicatorColor = colorResource(R.color.light_green),
+                                focusedIndicatorColor = colorResource(R.color.light_green)
+                            )
+                        )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        TextField(
+                            phoneNumber,
+                            onValueChange = {
+                                phoneNumber = it
+                            },
+                            placeholder = { Text(text = "Phone Number") },
+                            singleLine = true,
+                            textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+//                                unfocusedIndicatorColor = colorResource(R.color.light_green),
+                                focusedIndicatorColor = colorResource(R.color.light_green)
+                            )
+                        )
+                    }
 
-            Text(
-                "Carrier charges may apply",
-                color = Color.Gray.copy(alpha = 0.6f),
-                fontSize = 16.sp
-            )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = {
+                            if (phoneNumber.isNotEmpty()) {
+                                val fullPhoneNumber = "$countryCode$phoneNumber"
+                                phoneAuthViewModel.sendVerificationCode(fullPhoneNumber, activity)
+                            } else {
+                                Toast.makeText(context, "please enter a valid phone number", Toast.LENGTH_SHORT).show()
+                            }
+                        }, modifier = Modifier.size(height = 50.dp, width = 150.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_green))
+                    ) {
+                        Text(
+                            "Sent OTP",
+                            color = colorResource(R.color.white),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                    }
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Button(
-                onClick = {}, modifier = Modifier.size(height = 50.dp, width = 150.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_green))
-            ) {
-                Text(
-                    "Next",
-                    color = colorResource(R.color.white),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
+                    if (authState is AuthState.Loading) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        CircularProgressIndicator()
+                    }
+                } else
             }
         }
     }
