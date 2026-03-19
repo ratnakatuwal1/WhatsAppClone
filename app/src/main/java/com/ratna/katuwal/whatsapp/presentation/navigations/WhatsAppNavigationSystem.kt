@@ -29,7 +29,7 @@ fun WhatsAppNavigationSystem(modifier: Modifier = Modifier) {
         }
 
         composable<Routes.UserRegistrationScreen> {
-            UserRegistration()
+            UserRegistration(navHostController = navController)
         }
 
         composable<Routes.HomeScreen> {
