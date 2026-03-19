@@ -72,4 +72,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0")
 }

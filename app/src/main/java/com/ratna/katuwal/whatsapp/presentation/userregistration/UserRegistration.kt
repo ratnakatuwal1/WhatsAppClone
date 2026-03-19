@@ -345,9 +345,14 @@ fun UserRegistration(
                         colors = TextFieldDefaults.colors(
                             unfocusedContainerColor = Color.Transparent,
                             focusedContainerColor = Color.Transparent,
-//                                unfocusedIndicatorColor = colorResource(R.color.light_green),
+                                unfocusedIndicatorColor = colorResource(R.color.light_green),
                             focusedIndicatorColor = Color.Transparent
                         )
+                    )
+
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = colorResource(R.color.light_green)
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
@@ -385,7 +390,7 @@ fun UserRegistration(
                 Log.d("PhoneAuth", "Login Successful")
                 phoneAuthViewModel.resetAuthState()
 
-                navHostController.navigate(Routes.UserProfileScreen) {
+                navHostController.navigate(Routes.UserProfileSetScreen) {
                     popUpTo<Routes.UserRegistrationScreen> {
                         inclusive = true
                     }
