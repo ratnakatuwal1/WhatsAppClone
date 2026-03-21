@@ -1,6 +1,7 @@
 package com.ratna.katuwal.whatsapp.presentation.homescreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,21 +27,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.rememberAsyncImagePainter
 import com.ratna.katuwal.whatsapp.R
+import com.ratna.katuwal.whatsapp.presentation.viewmodel.BaseViewModel
 
 @Composable
-fun ChatDesign(modifier: Modifier = Modifier,
-               chatListModel: ChatListModel) {
+fun ChatDesign(
+    modifier: Modifier = Modifier,
+    chatListModel: ChatListModel,
+    onClick: () -> Unit,
+    baseViewModel: BaseViewModel
+) {
     Row(
         modifier = Modifier
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val profileImage = chatListModel?.profileImage
+        val bitmap = remember() {
+            profileImage?.let { baseViewModel.base64ToBitmap(it) }
+        }
         Image(
-            painter = painterResource(chatListModel.image),
+            painter = if (bitmap != null) {
+                rememberAsyncImagePainter(bitmap)
+            } else {
+                painterResource(R.drawable.img_1)
+            },
             contentDescription = null,
             modifier = Modifier
                 .size(60.dp)
+                .background(colorResource(R.color.teal_700))
                 .clip(CircleShape), contentScale = ContentScale.Crop
         )
 
@@ -51,13 +68,14 @@ fun ChatDesign(modifier: Modifier = Modifier,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    chatListModel.name,
+                    chatListModel.name?: "Unknown",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    chatListModel.time,
+                    chatListModel.time?: "--:--",
+                    fontSize = 14.sp,
                     color = colorResource(R.color.teal_700)
                 )
             }
@@ -65,25 +83,11 @@ fun ChatDesign(modifier: Modifier = Modifier,
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                chatListModel.message,
+                chatListModel.message?: "message",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 color = colorResource(R.color.teal_700)
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ChatDesignPreview() {
-
-    val sampleChat = ChatListModel(
-        image = R.drawable.salman_khan,
-        name = "Salman Khan",
-        message = "Hello",
-        time = "10:00 AM"
-    )
-
-    ChatDesign(chatListModel = sampleChat)
 }

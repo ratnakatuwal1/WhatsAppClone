@@ -74,4 +74,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
 
     implementation("io.coil-kt.coil3:coil-compose:3.0.0")
+
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 }

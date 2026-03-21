@@ -23,12 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.ratna.katuwal.whatsapp.R
 import com.ratna.katuwal.whatsapp.presentation.bottomnavigation.BottomNavigation
+import com.ratna.katuwal.whatsapp.presentation.navigations.Routes
 
 @Composable
-@Preview(showSystemUi = true)
-fun UpdateScreen(modifier: Modifier = Modifier) {
+fun UpdateScreen(modifier: Modifier = Modifier,
+                 navHostController: NavHostController) {
     val scrollState = rememberScrollState()
     val statusData = listOf(
         sampleStatusData(image = R.drawable.disha_patani, name = "Disha Patani", time = "10:00 AM"),
@@ -65,7 +67,25 @@ fun UpdateScreen(modifier: Modifier = Modifier) {
                 )
             }
         }, bottomBar = {
-            BottomNavigation()
+            BottomNavigation(navHostController = navHostController, selectedItem = 0, onClick = {index ->
+                when(index){
+                    0 -> {
+                        navHostController.navigate(Routes.HomeScreen)
+                    }
+
+                    1 -> {
+                        navHostController.navigate(Routes.UpdateScreen)
+                    }
+
+                    2 -> {
+                        navHostController.navigate(Routes.CommunitiesScreen)
+                    }
+
+                    3 -> {
+                        navHostController.navigate(Routes.CallsScreen)
+                    }
+                }
+            })
         }, topBar = {
             TopBar()
         }

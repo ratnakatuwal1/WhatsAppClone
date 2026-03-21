@@ -37,13 +37,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.ratna.katuwal.whatsapp.R
 import com.ratna.katuwal.whatsapp.presentation.bottomnavigation.BottomNavigation
+import com.ratna.katuwal.whatsapp.presentation.navigations.Routes
 import com.ratna.katuwal.whatsapp.presentation.updatescreen.TopBar
 
 @Composable
-@Preview(showSystemUi = true)
-fun CommunityScreen(modifier: Modifier = Modifier) {
+fun CommunityScreen(modifier: Modifier = Modifier,
+                    navHostController: NavHostController) {
     var isSearching by remember {
         mutableStateOf(false)
     }
@@ -161,7 +163,25 @@ fun CommunityScreen(modifier: Modifier = Modifier) {
             }
         }
     }, bottomBar = {
-        BottomNavigation()
+        BottomNavigation(navHostController = navHostController, selectedItem = 0, onClick = {index ->
+            when(index){
+                0 -> {
+                    navHostController.navigate(Routes.HomeScreen)
+                }
+
+                1 -> {
+                    navHostController.navigate(Routes.UpdateScreen)
+                }
+
+                2 -> {
+                    navHostController.navigate(Routes.CommunitiesScreen)
+                }
+
+                3 -> {
+                    navHostController.navigate(Routes.CallsScreen)
+                }
+            }
+        })
     }) {
         Column(modifier = Modifier.padding(it)) {
             Button(

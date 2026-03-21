@@ -3,6 +3,7 @@ package com.ratna.katuwal.whatsapp.presentation.navigations
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,6 +14,7 @@ import com.ratna.katuwal.whatsapp.presentation.profile.UserProfileSetScreen
 import com.ratna.katuwal.whatsapp.presentation.splashscreen.SplashScreen
 import com.ratna.katuwal.whatsapp.presentation.updatescreen.UpdateScreen
 import com.ratna.katuwal.whatsapp.presentation.userregistration.UserRegistration
+import com.ratna.katuwal.whatsapp.presentation.viewmodel.BaseViewModel
 import com.ratna.katuwal.whatsapp.presentation.wellcomescreen.WelcomeScreen
 
 @Composable
@@ -34,19 +36,20 @@ fun WhatsAppNavigationSystem(modifier: Modifier = Modifier) {
         }
 
         composable<Routes.HomeScreen> {
-            HomeScreen()
+            val baseViewModel: BaseViewModel = hiltViewModel()
+            HomeScreen(navController, baseViewModel)
         }
 
         composable<Routes.UpdateScreen> {
-            UpdateScreen()
+            UpdateScreen(navHostController = navController)
         }
 
         composable<Routes.CommunitiesScreen> {
-            CommunityScreen()
+            CommunityScreen(navHostController = navController)
         }
 
         composable<Routes.CallsScreen> {
-            CallScreen()
+            CallScreen(navHostController = navController)
         }
 
         composable<Routes.UserProfileSetScreen> {
